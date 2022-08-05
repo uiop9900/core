@@ -11,9 +11,10 @@ import hello.core.order.OrderServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration      //설정정보
+@Configuration      //설정
 public class AppConfig { // 이것만 봐도 각 Service, Repository에서 어떤 구현체를 불러오는 지 확인할 수 있다.
-
+    //factory method를 통해서 스프링에 올린다.
+    //FactoryBean이 클래스명, 그 안의 factoryMethodName으로 각 서비스(service, repository)를 스프링에 올린다.
     @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
