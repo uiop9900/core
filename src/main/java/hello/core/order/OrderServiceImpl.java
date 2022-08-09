@@ -1,18 +1,22 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+//@RequiredArgsConstructor //final이 붙은 것을 보고 아래의 생성자를 자동으로 만들어낸다.
 public class OrderServiceImpl implements OrderService{
 
     //기존에 내가 하던 방식, @Autowired로 부르기 -> new를 통한 순수한 자바코드에서 쓸수가 없다. -> 쓰지않는다. test/Config에서만 쓴다.
+    //final 을 넣게 되면 혹시라도 값이 안들어올 경우, 에러가 난다. , 생성자 주입 방식만이 final 키워드를 사용할 수 있다.
     private final MemberRepository memberRepository;
     //private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
    // private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
@@ -20,7 +24,7 @@ public class OrderServiceImpl implements OrderService{
 
     //생성자가 하나이면 @Autowired 생략가능하다.
     @Autowired  //생성자로 호출하면 딱 1번만 호출됨 -> 불변, 필수 :: 항상 한계점을 만들고 촘촘하게 제어하는게 좋은 코드이다.
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
